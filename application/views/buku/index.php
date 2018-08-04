@@ -243,7 +243,7 @@
                         <div class="form-group">
                             <label>Jenis Buku</label>
                             <div>
-                                <select name="" >
+                                <select name="id_jenis" >
                                   <option value="">--Pilih Jenis--</option>
                                   <?php foreach ($jenis as $key) : ?>
                                   <option value="<?php echo $key->id_jenis ?>"><?php echo $key->jenis_buku ?></option>

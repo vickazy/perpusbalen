@@ -81,7 +81,8 @@ class Buku extends CI_Controller {
                 'bahasa'     	=>$bahasa,         
                 'harga' 		=>$harga,    
                 'no_induk' 		=>$no_induk,  
-                'keterangan' 	=>$keterangan    
+                'keterangan'    =>$keterangan,    
+                'id_jenis' 	    =>$this->input->post('id_jenis')    
             ]);
 
         }
