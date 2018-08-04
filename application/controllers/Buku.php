@@ -5,7 +5,8 @@ class Buku extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('M_buku');
+        $this->load->model('M_buku');
+		$this->load->model('M_jenis');
 		$this->load->library('PHPExcel');
 	}
 
@@ -13,7 +14,8 @@ class Buku extends CI_Controller {
 	{
 		$data['judul'] 	= "Buku";
 		$data['menu'] 	= "buku";
-		$data['buku'] 	= $this->M_buku->get_all()->result();
+        $data['buku']   = $this->M_buku->get_all()->result();
+		$data['jenis'] 	= $this->M_jenis->get_all()->result();
 		$this->load->view('buku/index', $data);
 	}
 

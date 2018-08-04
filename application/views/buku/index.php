@@ -1,5 +1,4 @@
 <?php $this->load->view('header'); ?>
-<?php $this->load->view('js_form'); ?>
 
 	<body class="no-skin">
 		<div id="navbar" class="navbar navbar-default ace-save-state">
@@ -244,11 +243,11 @@
                         <div class="form-group">
                             <label>Jenis Buku</label>
                             <div>
-                                <select name="" class="chosen-select form-control" id="form-field-select-3" data-placeholder="Choose a State...">
+                                <select name="" >
                                   <option value="">--Pilih Jenis--</option>
-                                  <option value=""></option>
-                                  <option value=""></option>
-                                  <option value=""></option>
+                                  <?php foreach ($jenis as $key) : ?>
+                                  <option value="<?php echo $key->id_jenis ?>"><?php echo $key->jenis_buku ?></option>
+                                  <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
