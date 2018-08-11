@@ -10,7 +10,7 @@
 						<b class="arrow"></b>
 					</li>
 
-					<li class="<?php if($menu == "buku" || $menu == "anggota" || $menu == "petugas"){echo "open";} ?>">
+					<li class="<?php if($menu == "buku" || $menu == "anggota" || $menu == "guru" || $menu == "petugas"){echo "open";} ?>">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-desktop"></i>
 							<span class="menu-text">
@@ -42,6 +42,15 @@
 								<b class="arrow"></b>
 							</li>
 
+							<li class="<?php if($menu == "guru"){echo "active";} ?>">
+								<a href="<?php echo site_url('Guru') ?>">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Guru
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
 							<li class="<?php if($menu == "petugas"){echo "active";} ?>">
 								<a href="<?php echo site_url('Petugas') ?>">
 									<i class="menu-icon fa fa-caret-right"></i>
@@ -53,7 +62,7 @@
 						</ul>
 					</li>
 
-					<li class="">
+					<li class="<?php if($menu == "pengembalian" || $menu == "peminjaman"){echo "open";} ?>">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-desktop"></i>
 							<span class="menu-text">
@@ -67,8 +76,8 @@
 
 						<ul class="submenu">
 
-							<li class="">
-								<a href="">
+							<li class="<?php if($menu == "peminjaman"){echo "active";} ?>">
+								<a href="<?php echo site_url('Peminjaman') ?>">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Peminjaman
 								</a>
@@ -76,8 +85,8 @@
 								<b class="arrow"></b>
 							</li>
 
-							<li class="">
-								<a href="">
+							<li class="<?php if($menu == "pengembalian"){echo "active";} ?>">
+								<a href="<?php echo site_url('Pengembalian') ?>">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Pengembalian
 								</a>

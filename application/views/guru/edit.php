@@ -76,7 +76,7 @@
 						<ul class="breadcrumb">
 							<li>
 								<i class="ace-icon fa fa-user user-icon"></i>
-								<a href="<?php echo site_url('Petugas') ?>">Petugas</a>
+								<a href="<?php echo site_url('guru') ?>">Guru</a>
 							</li>
 							<li class="active">Edit</li>
 						</ul><!-- /.breadcrumb -->
@@ -90,20 +90,20 @@
 
 								<div class="widget-box">
 									<div class="widget-header">
-										<h4 class="widget-title">EDIT PETUGAS <?php echo $petugas['nama_petugas'] ?></h4>
+										<h4 class="widget-title">EDIT guru <?php echo $guru['nama_guru'] ?></h4>
 									</div>
 									<div class="widget-body">
 										<div class="widget-main no-padding">
-											<?php echo form_open('petugas/edit_proses/'.$petugas['id_petugas']); ?>
+											<?php echo form_open('guru/edit_proses/'.$guru['id_guru']); ?>
 												<!-- <legend>Form</legend> -->
 												<fieldset class="form-group">
-													<label>NIP / NIGNP Petugas</label>
-													<input class="form-control" type="text" name="nip" value="<?php echo $petugas['nip'] ?>" readonly/>
+													<label>NIP / NIGNP guru</label>
+													<input class="form-control" type="text" name="nip" value="<?php echo $guru['nip'] ?>" readonly/>
 													<?php echo form_error('nip') ?>
 													<br>
 
-													<label>Nama Petugas</label>
-													<input class="form-control" type="text" name="nama" value="<?php echo $petugas['nama_petugas'] ?>" />
+													<label>Nama guru</label>
+													<input class="form-control" type="text" name="nama" value="<?php echo $guru['nama_guru'] ?>" />
 													<?php echo form_error('nama') ?>
 													<br>
 

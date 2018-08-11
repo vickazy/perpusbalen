@@ -75,10 +75,9 @@
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 						<ul class="breadcrumb">
 							<li>
-								<i class="ace-icon fa fa-home home-icon"></i>
-								<a href="<?php echo site_url('') ?>">AppusBa</a>
+								<i class="ace-icon fa fa-user home-icon"></i>
+								<a href="<?php echo site_url('Petugas') ?>">Petugas</a>
 							</li>
-							<li class="active">petugas</li>
 						</ul><!-- /.breadcrumb -->
 					</div>
 
@@ -90,7 +89,7 @@
 
 
                   <div class="table-header">
-                  LIST petugas
+                  LIST PETUGAS
                   </div>
                   <div class="clearfix">
                       <br>

@@ -83,6 +83,7 @@
 			
 				$.mask.definitions['~']='[+-]';
 				$('.input-mask-date').mask('99/99/9999');
+				$('.input-mask-dateku').mask('9999-99-99');
 				$('.input-mask-phone').mask('9999-9999-9999');
 				$('.input-mask-eyescript').mask('~9.99 ~9.99 999');
 				$(".input-mask-product").mask("a*-999-a999",{placeholder:" ",completed:function(){alert("You typed the following: "+this.val());}});

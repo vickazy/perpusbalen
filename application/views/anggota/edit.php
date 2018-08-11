@@ -75,8 +75,8 @@
 					<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 						<ul class="breadcrumb">
 							<li>
-								<i class="ace-icon fa fa-user user-icon"></i>
-								<a href="<?php echo site_url('Petugas') ?>">Petugas</a>
+								<i class="ace-icon fa fa-users home-icon"></i>
+								<a href="<?php echo site_url('Anggota') ?>">Anggota</a>
 							</li>
 							<li class="active">Edit</li>
 						</ul><!-- /.breadcrumb -->
@@ -90,22 +90,39 @@
 
 								<div class="widget-box">
 									<div class="widget-header">
-										<h4 class="widget-title">EDIT PETUGAS <?php echo $petugas['nama_petugas'] ?></h4>
+										<h4 class="widget-title">EDIT ANGGOTA <?php echo $anggota['nama'] ?></h4>
 									</div>
 									<div class="widget-body">
 										<div class="widget-main no-padding">
-											<?php echo form_open('petugas/edit_proses/'.$petugas['id_petugas']); ?>
+											<?php echo form_open('anggota/edit_proses/'.$anggota['nis']); ?>
 												<!-- <legend>Form</legend> -->
 												<fieldset class="form-group">
-													<label>NIP / NIGNP Petugas</label>
-													<input class="form-control" type="text" name="nip" value="<?php echo $petugas['nip'] ?>" readonly/>
-													<?php echo form_error('nip') ?>
+													<label>NIS</label>
+													<input class="form-control" type="text" name="nis" value="<?php echo $anggota['nis'] ?>" readonly/>
+													<?php echo form_error('nis') ?>
 													<br>
 
-													<label>Nama Petugas</label>
-													<input class="form-control" type="text" name="nama" value="<?php echo $petugas['nama_petugas'] ?>" />
+													<label>Nama Anggota</label>
+													<input class="form-control" type="text" name="nama" value="<?php echo $anggota['nama'] ?>" />
 													<?php echo form_error('nama') ?>
 													<br>
+
+													<label>Jenis Kelamin</label>
+						                            <div>
+						                                <select name="jk" id="" class="form-control">
+						                                  <option value="">--Pilih Jenis Kelamin--</option>
+						                                  <option value="L" <?php if($anggota['jk'] == 'L'){echo "selected";} ?> >Laki - laki</option>
+						                                  <option value="P" <?php if($anggota['jk'] == 'P'){echo "selected";} ?> >Perempuan</option>
+						                                </select>
+						                                <?php echo form_error('jk') ?>
+						                            </div>
+						                            <br>
+
+						                            <label>Kelas</label>
+						                            <div>
+						                                 <input class="form-control" type="text" name="kelas" value="<?php echo $anggota['kelas'] ?>" required>
+						                                <?php echo form_error('kelas') ?>
+						                            </div>
 
 												</fieldset>
 
