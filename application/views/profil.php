@@ -46,8 +46,10 @@
 
 								<li>
 									<a href="#">
-										<i class="ace-icon fa fa-power-off"></i>
-										Logout
+										<a href="<?php echo site_url('Login/logout') ?>">
+											<i class="ace-icon fa fa-power-off"></i>
+											Logout
+										</a>
 									</a>
 								</li>
 							</ul>

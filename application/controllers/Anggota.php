@@ -7,6 +7,10 @@ class Anggota extends CI_Controller {
 		parent::__construct();
         $this->load->model('M_anggota');
 		$this->load->library('PHPExcel');
+
+        if ($this->session->userdata('userdata') == null) {
+            redirect('Login');
+        }
 	}
 
 	public function index()

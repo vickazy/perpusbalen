@@ -11,6 +11,10 @@ class Peminjaman extends CI_Controller {
         $this->load->model('M_guru');
         $this->load->model('M_petugas');
         $this->load->model('M_buku');
+
+        if ($this->session->userdata('userdata') == null) {
+            redirect('Login');
+        }
     }
 
     public function index()

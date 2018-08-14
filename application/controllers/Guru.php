@@ -8,6 +8,10 @@ class Guru extends CI_Controller {
         $this->load->model('M_guru');
 		$this->load->model('M_jenis');
 		$this->load->library('PHPExcel');
+
+        if ($this->session->userdata('userdata') == null) {
+            redirect('Login');
+        }
 	}
 
 	public function index()
