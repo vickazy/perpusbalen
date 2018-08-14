@@ -34,8 +34,9 @@ class Pengembalian extends CI_Controller {
         if($total > 0)
         {
             $id_peminjaman      = $this->input->post('id_peminjaman');          //no_nota
-            $tanggal_sekarang     = $this->input->post('tanggal_sekarang');
-            $id_anggota     = $this->input->post('id_anggota');
+            $tanggal_sekarang   = $this->input->post('tanggal_sekarang');
+            $id_anggota         = $this->input->post('id_anggota');
+            $denda              = $this->input->post('denda');
 
             if($tanggal_sekarang == '')
             {
@@ -43,7 +44,7 @@ class Pengembalian extends CI_Controller {
             }
             else
             {
-                $this->M_peminjaman->update($id_peminjaman, $tanggal_sekarang);
+                $this->M_peminjaman->update($id_peminjaman, $tanggal_sekarang, $denda);
                 $this->M_anggota->update_peminjaman($id_anggota, 0);
 
                 $id_peminjaman = $this->M_peminjaman->get_id_peminjaman($id_peminjaman)->row()->id_peminjaman;
@@ -95,10 +96,13 @@ class Pengembalian extends CI_Controller {
     {
         if($this->input->is_ajax_request())
         {
-            $keyword    = $this->input->post('id_anggota');
+            $keyword             = $this->input->post('id_anggota');
+            $tanggal_sekarang    = $this->input->post('tanggal_sekarang');
 
             $trans      = $this->M_peminjaman->cari_kode($keyword);
             $trans_guru = $this->M_peminjaman->cari_kode_guru($keyword);
+
+            $denda      = $this->M_peminjaman->hitung_denda($keyword, $tanggal_sekarang);
 
             if($trans_guru->num_rows() > 0)
             {
@@ -125,6 +129,7 @@ class Pengembalian extends CI_Controller {
                 $json['tanggal_kembali']= $trans_guru->row()->tanggal_kembali;
                 $json['guru']           = $trans_guru->row()->nama_guru;
                 $json['petugas']        = $trans_guru->row()->nama_petugas;
+                $json['denda']          = $denda;
             }
             elseif ($trans->num_rows() > 0) {
                 $json['status']     = 1;
@@ -134,12 +139,13 @@ class Pengembalian extends CI_Controller {
                 {
                     $json['hasil'] .= "
                         <tr>
+                            <tr>
                             <td>".$no."</td>
-                            <td >".$b->kode_buku."</td> <br />
+                            <td width='30px'> <input type='text' class='form-control' name='kode_buku[]' value=".$b->kode_buku." readonly /></td> <br />
                             <td >".$b->judul."</td> <br>
                             <td >".$b->penerbit."</td>
                             <td >".$b->pengarang."</td>
-                            <td >".$b->jumlah."</td>
+                            <td width='30px'> <input type='text' class='form-control' name='jumlah[]' value=".$b->jumlah." readonly /></td>
                         </tr>
                     ";
                     $no++;
@@ -150,6 +156,7 @@ class Pengembalian extends CI_Controller {
                 $json['tanggal_kembali']= $trans->row()->tanggal_kembali;
                 $json['guru']           = "Tidak Ada";
                 $json['petugas']        = $trans->row()->nama_petugas;
+                $json['denda']          = $denda;
             }
             else
             {

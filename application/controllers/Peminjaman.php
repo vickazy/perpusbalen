@@ -23,6 +23,14 @@ class Peminjaman extends CI_Controller {
         $this->load->view('peminjaman/index', $data);
     }
 
+    public function histori()
+    {
+        $data['judul']  = "Histori Transaksi";
+        $data['menu']   = "histori";
+        $data['peminjaman']  = $this->M_peminjaman->get_all()->result();
+        $this->load->view('peminjaman/histori', $data);
+    }
+
     public function tambah_proses()
     {
         $total = 0;
@@ -43,6 +51,10 @@ class Peminjaman extends CI_Controller {
             if($tanggal_kembali == '')
             {
                 echo json_encode(array('status' => 0, 'pesan' => "Isi Tanggal Kembali"));
+            }
+            elseif($id_anggota == '')
+            {
+                echo json_encode(array('status' => 0, 'pesan' => "Pilih Peminjam"));
             }
             else
             {
@@ -90,18 +102,14 @@ class Peminjaman extends CI_Controller {
         }
         else
         {
-            echo json_encode(array('status' => 0, 'pesan' => "Masukkan Barang"));
+            echo json_encode(array('status' => 0, 'pesan' => "Masukkan Buku"));
         }
     }
 
-    public function edit($id)
+    public function ekspor()
     {
-        $data['judul']      = 'peminjaman || EDIT';
-        $data['menu']       = 'peminjaman';
-        $data['js']         = 'js_form';
-        $data['konten']     = 'peminjaman/edit';
-        $data['peminjaman']  = $this->M_peminjaman->get_by_id($id)->row_array();
-        $this->load->view('template', $data);
+        $data['all']=$this->M_peminjaman->get_all()->result();
+        $this->load->view('peminjaman/ekspor', $data);
     }
 
     public function ajax_kode()
@@ -137,6 +145,16 @@ class Peminjaman extends CI_Controller {
 
             echo json_encode($json);
         }
+    }
+
+    public function data_server()
+    {
+        $this->load->library('Datatables');
+        $this->datatables->select('transaksi.id_peminjaman, transaksi.tanggal_pinjam, anggota.nama, transaksi.status');
+        $this->datatables->from('transaksi');
+        $this->datatables->join('anggota', 'transaksi.id_anggota = anggota.nis');
+        // $this->datatables->order_by('transaksi.id_peminjaman', 'asc');
+        echo $this->datatables->generate();
     }
 }
 

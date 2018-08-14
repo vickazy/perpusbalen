@@ -2,7 +2,7 @@
 				<div class="footer-inner">
 					<div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">&copy; 2013-2014</span>
+							<span class="blue bolder">&copy; 2018</span>
 							All Right Reserved
 						</span>
 					</div>

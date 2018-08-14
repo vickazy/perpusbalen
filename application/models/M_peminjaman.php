@@ -26,6 +26,28 @@ class M_peminjaman extends CI_Model {
         return $tgl."-".$kd;
 	}
 
+	public function get_all()
+	{
+		$q = $this->db->query("SELECT *, transaksi.status as ts FROM transaksi, detail_transaksi, anggota, petugas
+							WHERE transaksi.id_peminjaman = detail_transaksi.id_peminjaman
+							AND transaksi.id_anggota = anggota.nis
+							AND transaksi.id_petugas = petugas.id_petugas
+							GROUP BY transaksi.id_peminjaman");
+
+		return $q;
+	}
+
+	public function get_histori($id_peminjaman)
+	{
+		$q = $this->db->query(" SELECT detail_transaksi.kode_buku , buku.judul, buku.penerbit, buku.pengarang, detail_transaksi.jumlah
+			FROM transaksi, detail_transaksi, buku
+			WHERE transaksi.id_peminjaman = detail_transaksi.id_peminjaman
+			AND detail_transaksi.kode_buku = buku.kode_buku
+			AND detail_transaksi.id_peminjaman = '$id_peminjaman' ");
+
+		return $q;
+	}
+
 	public function get_id_peminjaman($id_peminjaman)
 	{
 		$this->db->where('id_peminjaman', $id_peminjaman);
@@ -60,16 +82,8 @@ class M_peminjaman extends CI_Model {
 		$this->db->insert('detail_transaksi', $data);
 	}
 
-	public function update($id_peminjaman, $tanggal_sekarang)
-	{
-		$selisih = $this->db->query("SELECT datediff($tanggal_sekarang, tanggal_kembali) as selisih 
-			FROM `transaksi` WHERE id_peminjaman = '$id_peminjaman' ")->row()->selisih;
-
-		if ($selisih > 0) {
-			$denda = 100 * $selisih;
-		} else {
-			$denda = 0;
-		}		
+	public function update($id_peminjaman, $tanggal_sekarang, $denda)
+	{	
 
 		$data = array(
 			'kembali_tanggal' 	=> $tanggal_sekarang,
@@ -84,6 +98,32 @@ class M_peminjaman extends CI_Model {
 
 		$this->db->where('id_peminjaman', $id_peminjaman);
 		$this->db->update('detail_transaksi', $status);
+	}
+
+	public function hitung_denda($id_anggota, $tanggal_sekarang)
+	{
+		$selisih = $this->db->query("SELECT datediff('$tanggal_sekarang', tanggal_kembali) as selisih 
+			FROM transaksi, anggota
+			WHERE transaksi.id_anggota = anggota.nis
+			AND anggota.nis = '$id_anggota'
+			AND transaksi.status = 'P'
+			")->row()->selisih;
+
+		$jumlah_b = $this->db->query("SELECT kode_buku 
+			FROM transaksi, detail_transaksi, anggota
+			WHERE transaksi.id_peminjaman = detail_transaksi.id_peminjaman
+			AND transaksi.id_anggota = anggota.nis
+			AND anggota.nis = '$id_anggota'
+			AND detail_transaksi.status = 'P'
+			")->num_rows();
+
+		if ($selisih > 0) {
+			$denda = 100 * $selisih * $jumlah_b;
+		} else {
+			$denda = 0;
+		}
+
+		return $denda;
 	}
 
 	public function cari_kode($keyword)

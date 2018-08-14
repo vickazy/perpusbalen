@@ -1,70 +1,7 @@
 <?php $this->load->view('header'); ?>
 
 	<body class="no-skin">
-		<div id="navbar" class="navbar navbar-default ace-save-state">
-			<div class="navbar-container ace-save-state" id="navbar-container">
-				<button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
-					<span class="sr-only">Toggle sidebar</span>
-
-					<span class="icon-bar"></span>
-
-					<span class="icon-bar"></span>
-
-					<span class="icon-bar"></span>
-				</button>
-
-				<div class="navbar-header pull-left">
-					<a href="index.html" class="navbar-brand">
-						<small>
-							<i class="fa fa-book"></i>
-							AppusBa
-						</small>
-					</a>
-				</div>
-
-				<div class="navbar-buttons navbar-header pull-right" role="navigation">
-					<ul class="nav ace-nav">
-
-						<li class="light-blue dropdown-modal">
-							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src="<?php echo base_url() ?>assets/images/avatars/user.jpg" alt="Jason's Photo" />
-								<span class="user-info">
-									<small>Welcome,</small>
-									Jason
-								</span>
-
-								<i class="ace-icon fa fa-caret-down"></i>
-							</a>
-
-							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-								<li>
-									<a href="#">
-										<i class="ace-icon fa fa-cog"></i>
-										Settings
-									</a>
-								</li>
-
-								<li>
-									<a href="profile.html">
-										<i class="ace-icon fa fa-user"></i>
-										Profile
-									</a>
-								</li>
-
-								<li class="divider"></li>
-
-								<li>
-									<a href="#">
-										<i class="ace-icon fa fa-power-off"></i>
-										Logout
-									</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</div><!-- /.navbar-container -->
-		</div>
+		<?php $this->load->view('profil'); ?>
 
 		<div class="main-container ace-save-state" id="main-container">
 
@@ -195,6 +132,11 @@
 													</fieldset>
 												</div>
 
+												<div class='alert alert-info TotalBayar'>
+													<h2>Denda : <span id='Denda'>Rp. 0</span></h2>
+													<input type="hidden" id='TotalDenda'>
+												</div>
+
 												<div class="form-horizontal" style="text-align: center;">
 													<div class='row'>
 														<div class="col-sm-4"></div>
@@ -237,12 +179,13 @@
 <script>
 	$(document).on('change', '#id_anggota', function(){
 		var id = $(this).find(":selected").val();
+		var tanggal_sekarang = encodeURI($('#tanggal_sekarang').val());
 
 		$.ajax({
 			url: "<?php echo site_url('Pengembalian/cari_kode'); ?>",
 			type: "POST",
 			cache: false,
-			data: "id_anggota="+id,
+			data: "id_anggota="+id+"&tanggal_sekarang="+tanggal_sekarang,
 			dataType:'json',
 			success: function(data){
 				if(data.status == 1)
@@ -253,6 +196,8 @@
 					$('#id_petugas').val(data.petugas);
 					$('#tanggal_kembali').val(data.tanggal_kembali);
 					$('#tanggal_pinjam').val(data.tanggal_pinjam);
+					$('#Denda').html(to_rupiah(data.denda));
+					$('#TotalDenda').val(data.denda);
 				}
 				if(data.status == 0)
 				{
@@ -358,6 +303,7 @@
 		var FormData = "id_peminjaman="+encodeURI($('#id_peminjaman').val());
 		FormData += "&tanggal_sekarang="+encodeURI($('#tanggal_sekarang').val());
 		FormData += "&id_anggota="+encodeURI($('#id_anggota').val());
+		FormData += "&denda="+encodeURI($('#TotalDenda').val());
 		// FormData += "&jumlah="+encodeURI($('#jumlah').val());
 		FormData += "&" + $('#TabelPengembalian tbody input').serialize();
 
