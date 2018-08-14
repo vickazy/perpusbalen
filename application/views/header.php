@@ -52,7 +52,6 @@
 
 		<script type='text/javascript' src='<?php echo base_url();?>assets/jquery.autocomplete/jquery.autocomplete.js'></script>
 
-		<script src="<?php echo base_url() ?>assets/highcharts.js"></script>
 
 		<script src="<?php echo base_url() ?>assets/js/bootstrap.min.js"></script>
 		<script src="<?php echo base_url() ?>assets/js/ace.min.js"></script>

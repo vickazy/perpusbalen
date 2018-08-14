@@ -124,7 +124,7 @@
                         <div class="form-group">
                             <label>Jenis Buku</label>
                             <div>
-                                <select name="id_jenis" class="form-control" >
+                                <select name="id_jenis" class="form-control chosen-select " id="form-field-select-3">
                                   <option value="">--Pilih Jenis--</option>
                                   <?php foreach ($jenis as $key) : ?>
                                   <option value="<?php echo $key->id_jenis ?>"><?php echo $key->jenis_buku ?></option>

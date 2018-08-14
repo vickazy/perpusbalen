@@ -37,6 +37,24 @@ class M_peminjaman extends CI_Model {
 		return $q;
 	}
 
+	public function get_jenis()
+	{
+		return $this->db->get('jenis');
+	}
+
+	public function get_buku_per_bln($id_jenis, $bln)
+	{
+		$q = $this->db->query("SELECT detail_transaksi.id_peminjaman, jenis.id_jenis, jenis.jenis_buku, COUNT(jenis.id_jenis) as jum, MID(detail_transaksi.id_peminjaman, 6, 2) as bln
+			FROM detail_transaksi, jenis, buku
+			WHERE detail_transaksi.kode_buku = buku.kode_buku
+			AND buku.id_jenis = jenis.id_jenis
+			AND jenis.id_jenis = $id_jenis
+			AND MID(detail_transaksi.id_peminjaman, 6, 2) = $bln
+			");
+
+		return $q;
+	}
+
 	public function get_histori($id_peminjaman)
 	{
 		$q = $this->db->query(" SELECT detail_transaksi.kode_buku , buku.judul, buku.penerbit, buku.pengarang, detail_transaksi.jumlah
@@ -47,6 +65,7 @@ class M_peminjaman extends CI_Model {
 
 		return $q;
 	}
+
 
 	public function get_id_peminjaman($id_peminjaman)
 	{
