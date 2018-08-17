@@ -89,6 +89,16 @@ class M_peminjaman extends CI_Model {
 		$this->db->insert('transaksi', $data);
 	}
 
+	public function cek_pinjam($id_anggota)
+	{
+		$q = $this->db->query("SELECT * FROM transaksi, detail_transaksi, anggota
+								WHERE transaksi.id_peminjaman = detail_transaksi.id_peminjaman
+								AND transaksi.id_anggota = anggota.nis
+								AND detail_transaksi.status = 'P'
+								AND anggota.nis = '$id_anggota' ");	
+		return $q;	
+	}
+
 	public function tambah_detail($id_peminjaman, $kode_buku, $jumlah)
 	{
 		$data = array(
@@ -145,7 +155,7 @@ class M_peminjaman extends CI_Model {
 		return $denda;
 	}
 
-	public function cari_kode($keyword)
+	public function cari_kode($keyword, $id_peminjaman)
 	{
 		$q = $this->db->query("SELECT transaksi.id_peminjaman, transaksi.tanggal_pinjam, transaksi.tanggal_kembali, petugas.nama_petugas, buku.kode_buku, buku.judul, buku.penerbit, buku.pengarang, detail_transaksi.jumlah
 			FROM transaksi, detail_transaksi, buku, anggota, petugas
@@ -154,11 +164,12 @@ class M_peminjaman extends CI_Model {
 			AND transaksi.id_petugas = petugas.id_petugas
 			AND detail_transaksi.kode_buku = buku.kode_buku
 			AND detail_transaksi.status = 'P'
-			AND transaksi.id_anggota = '$keyword' ");
+			AND transaksi.id_anggota = '$keyword'
+			AND transaksi.id_peminjaman = '$id_peminjaman' ");
 		return $q;
 	}
 
-	public function cari_kode_guru($keyword)
+	public function cari_kode_guru($keyword, $id_peminjaman)
 	{
 		$r = $this->db->query("SELECT transaksi.id_peminjaman, transaksi.tanggal_pinjam, transaksi.tanggal_kembali, petugas.nama_petugas, guru.nama_guru, buku.kode_buku, buku.judul, buku.penerbit, buku.pengarang, detail_transaksi.jumlah 
 			FROM transaksi, detail_transaksi, buku, anggota, petugas, guru
@@ -168,7 +179,8 @@ class M_peminjaman extends CI_Model {
 			AND transaksi.id_guru = guru.id_guru
 			AND detail_transaksi.kode_buku = buku.kode_buku
 			AND detail_transaksi.status = 'P'
-			AND transaksi.id_anggota = '$keyword' ");
+			AND transaksi.id_anggota = '$keyword'
+			AND transaksi.id_peminjaman = '$id_peminjaman' ");
 		return $r;
 	}
 

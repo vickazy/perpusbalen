@@ -67,13 +67,35 @@ class M_buku extends CI_Model {
 			SELECT 
 				kode_buku, judul, penerbit, pengarang
 			FROM 
-				buku 
+				buku , jenis
+			WHERE 
+				jumlah > 0 
+				AND ( 
+					kode_buku LIKE '%".$this->db->escape_like_str($keyword)."%' 
+					OR judul LIKE '%".$this->db->escape_like_str($keyword)."%' 
+				)
+				AND buku.id_jenis = jenis.id_jenis
+				AND jenis.id_jenis != 1
+		";
+
+		return $this->db->query($sql);
+	}
+
+	public function cari_kode_paket($keyword)
+	{
+		$sql = "
+			SELECT 
+				kode_buku, judul, penerbit, pengarang
+			FROM 
+				buku , jenis
 			WHERE  
 				jumlah > 0 
 				AND ( 
 					kode_buku LIKE '%".$this->db->escape_like_str($keyword)."%' 
 					OR judul LIKE '%".$this->db->escape_like_str($keyword)."%' 
 				)
+				AND buku.id_jenis = jenis.id_jenis
+				AND jenis.id_jenis = 1
 		";
 
 		return $this->db->query($sql);

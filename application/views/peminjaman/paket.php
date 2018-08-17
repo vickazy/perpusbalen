@@ -47,7 +47,12 @@
 														&nbsp;
 
 														<label>Tanggal Kembali</label>
-														<input class="form-control input-mask-dateku" type="text" name="tanggal_kembali" id="tanggal_kembali" placeholder="thn-bln-hr" />
+														<?php 
+															$thn = date('Y');
+															$blnhr = date('m-d');
+															$t = $thn+1;
+														?>
+														<input class="form-control" type="text" name="tanggal_kembali" id="tanggal_kembali" value="<?php echo $t.'-'.$blnhr ?>" readonly/>
 			                            				
 													</fieldset>
 													</form>
@@ -81,7 +86,28 @@
 
 										<br>
 
-										<input type="hidden" id="id_guru" value="">
+										<div class="widget-box">
+											<div class="widget-header">
+												<h4 class="widget-title">INFO GURU</h4>
+											</div>
+
+											<div class="widget-body">
+												<div class="widget-main no-padding">
+													<!-- <legend>Form</legend> -->
+													<form>
+													<fieldset class="form-group">
+							                            <select name="id_guru" class="chosen-select form-control id_guru" id="id_guru" data-placeholder="Pilih Guru..." required>
+							                            	<option value="">--Pilih Guru--</option>
+							                            	<?php foreach ($guru as $row): ?>
+							                            	<option value="<?php echo $row->id_guru ?>"><?php echo $row->id_guru.' -- '.$row->nama_guru ?></option>
+							                            	<?php endforeach; ?>
+							                            </select>
+
+													</fieldset>
+													</form>
+												</div>
+											</div>
+										</div>
 									</div>
 
 									<div class="col-sm-9">
@@ -221,7 +247,7 @@
 		var Lebar = Lebar + 25;
 
 		$.ajax({
-			url: "<?php echo site_url('Peminjaman/ajax_kode'); ?>",
+			url: "<?php echo site_url('Peminjaman/ajax_kode_paket'); ?>",
 			type: "POST",
 			cache: false,
 			data:'keyword=' + KataKunci,
@@ -409,7 +435,7 @@
 			success: function(data){
 				if(data.status == 1){
 					alert(data.pesan); 
-					window.location.href="<?php echo site_url('Peminjaman'); ?>";
+					window.location.href="<?php echo site_url('Peminjaman/paket'); ?>";
 				}
 				if(data.status == 0){
 					$('.modal-dialog').removeClass('modal-lg');

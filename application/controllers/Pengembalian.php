@@ -20,11 +20,21 @@ class Pengembalian extends CI_Controller {
     public function index()
     {
         $data['judul']  = "Pengembalian";
-        $data['menu']   = "pengembalian";
+        $data['menu']   = "plainnya";
         $data['id_p']   = $this->M_peminjaman->get_id();
         $data['anggota'] = $this->M_anggota->get_pengembalian()->result();
         $data['guru']   = $this->M_guru->get_all()->result();
         $this->load->view('pengembalian/index', $data);
+    }
+
+    public function paket()
+    {
+        $data['judul']  = "Pengembalian";
+        $data['menu']   = "ppaket";
+        $data['id_p']   = $this->M_peminjaman->get_id();
+        $data['anggota'] = $this->M_anggota->get_pengembalian_paket()->result();
+        $data['guru']   = $this->M_guru->get_all()->result();
+        $this->load->view('pengembalian/paket', $data);
     }
 
     public function proses()
@@ -39,8 +49,12 @@ class Pengembalian extends CI_Controller {
         {
             $id_peminjaman      = $this->input->post('id_peminjaman');          //no_nota
             $tanggal_sekarang   = $this->input->post('tanggal_sekarang');
-            $id_anggota         = $this->input->post('id_anggota');
+            $id_guru            = $this->input->post('id_guru' );
             $denda              = $this->input->post('denda');
+            $keyword             = $this->input->post('id_anggota');
+            $pecah               = explode(",", $keyword);
+            $id_anggota          = $pecah[0];
+            // $id_peminjaman       = $pecah[1];
 
             if($tanggal_sekarang == '')
             {
@@ -49,9 +63,23 @@ class Pengembalian extends CI_Controller {
             else
             {
                 $this->M_peminjaman->update($id_peminjaman, $tanggal_sekarang, $denda);
-                $this->M_anggota->update_peminjaman($id_anggota, 0);
 
                 $id_peminjaman = $this->M_peminjaman->get_id_peminjaman($id_peminjaman)->row()->id_peminjaman;
+
+                $hm = 0;
+                $err = 0;
+                foreach ($_POST['jumlah'] as $jj){
+                    if ($id_guru == "") {
+                        $st = $this->M_anggota->get_by_id($id_anggota)->row()->status;
+                        $stn = $_POST['jumlah'][$hm];
+                        $this->M_anggota->update_status($id_anggota, $st-$stn); 
+                    }
+                    $hm++;
+                }
+
+                $cek = $this->M_peminjaman->cek_pinjam($id_anggota)->num_rows();
+
+                // if($cek == 0){
 
                     $inserted   = 0;
                     $no_array   = 0;
@@ -88,6 +116,7 @@ class Pengembalian extends CI_Controller {
                     {
                         echo json_encode(array('status' => 0, 'pesan' => "GAGAL"));
                     }
+                // }
             }
         }
         else
@@ -101,12 +130,15 @@ class Pengembalian extends CI_Controller {
         if($this->input->is_ajax_request())
         {
             $keyword             = $this->input->post('id_anggota');
+            $pecah               = explode(",", $keyword);
+            $id_anggota          = $pecah[0];
+            $id_peminjaman       = $pecah[1];
             $tanggal_sekarang    = $this->input->post('tanggal_sekarang');
 
-            $trans      = $this->M_peminjaman->cari_kode($keyword);
-            $trans_guru = $this->M_peminjaman->cari_kode_guru($keyword);
+            $trans      = $this->M_peminjaman->cari_kode($id_anggota, $id_peminjaman);
+            $trans_guru = $this->M_peminjaman->cari_kode_guru($id_anggota, $id_peminjaman);
 
-            $denda      = $this->M_peminjaman->hitung_denda($keyword, $tanggal_sekarang);
+            $denda      = $this->M_peminjaman->hitung_denda($id_anggota, $tanggal_sekarang);
 
             if($trans_guru->num_rows() > 0)
             {

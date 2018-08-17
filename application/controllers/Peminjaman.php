@@ -19,12 +19,22 @@ class Peminjaman extends CI_Controller {
 
     public function index()
     {
-        $data['judul']  = "Peminjaman";
-        $data['menu']   = "peminjaman";
+        $data['judul']  = "Peminjaman Buku";
+        $data['menu']   = "lainnya";
         $data['id_p']   = $this->M_peminjaman->get_id();
         $data['anggota'] = $this->M_anggota->get_peminjaman()->result();
         $data['guru']   = $this->M_guru->get_all()->result();
         $this->load->view('peminjaman/index', $data);
+    }
+
+    public function paket()
+    {
+        $data['judul']  = "Peminjaman Buku Paket";
+        $data['menu']   = "paket";
+        $data['id_p']   = $this->M_peminjaman->get_id();
+        $data['anggota'] = $this->M_anggota->get_peminjaman_paket()->result();
+        $data['guru']   = $this->M_guru->get_all()->result();
+        $this->load->view('peminjaman/paket', $data);
     }
 
     public function histori()
@@ -62,46 +72,70 @@ class Peminjaman extends CI_Controller {
             }
             else
             {
-                $this->M_peminjaman->tambah_peminjaman($id_peminjaman, $tanggal_pinjam, $tanggal_kembali, $id_petugas, $id_anggota, $id_guru);
-                $this->M_anggota->update_peminjaman($id_anggota, 1);
+                $hm = 0;
+                $err = 0;
+                foreach ($_POST['jumlah'] as $jj){
+                    // if (!empty($jj)) {
+                        $st = $this->M_anggota->get_by_id($id_anggota)->row()->status;
+                        $stn = $_POST['jumlah'][$hm];
 
-                $id_peminjaman = $this->M_peminjaman->get_id_peminjaman($id_peminjaman)->row()->id_peminjaman;
-
-                    $inserted   = 0;
-                    $no_array   = 0;
-                    foreach($_POST['kode_buku'] as $k)
-                    {
-                        if( ! empty($k))
-                        {
-                            $id_p           = $id_peminjaman;
-                            $id_b           = $_POST['kode_buku'][$no_array];
-                            $jumlah_b       = $_POST['jumlah'][$no_array];
-
-                            $insert_d = $this->M_peminjaman->tambah_detail($id_p, $id_b, $jumlah_b);
-                            
-                            // if($insert_d)
-                            // {
-                                $bk         = $this->M_buku->get_jumlah($id_b)->row_array();
-                                $stokk      = $bk['jumlah'];
-                                $stok_new   = $stokk-$jumlah_b;
-                                $this->M_buku->update_jumlah($id_b, $stok_new);
-
-                                // if ($update_b) {
-                                    $inserted++;    
-                                // }
-                            // }
+                        if ($id_guru == "") {
+                            if ($st+$stn > 4) {
+                                $err++;
+                                echo json_encode(array('status' => 0, 'pesan' => "Batas peminjaman <strong>4 Buku</strong>!"));
+                                $this->M_anggota->update_status($id_anggota, $st);
+                            } else {
+                                $this->M_anggota->update_status($id_anggota, $st+$stn); 
+                            }
                         }
-                        $no_array++;
-                    }
 
-                    if($inserted > 0)
-                    {
-                        echo json_encode(array('status' => 1, 'pesan' => "Transaksi berhasil disimpan !"));
-                    }
-                    else
-                    {
-                        echo json_encode(array('status' => 0, 'pesan' => "GAGAL"));
-                    }
+                    // }
+                    $hm++;
+                }
+
+                if ($err == 0) {
+                    $this->M_peminjaman->tambah_peminjaman($id_peminjaman, $tanggal_pinjam, $tanggal_kembali, $id_petugas, $id_anggota, $id_guru);
+                    $cek = $this->M_peminjaman->cek_pinjam($id_anggota)->num_rows();
+
+                    $id_peminjaman = $this->M_peminjaman->get_id_peminjaman($id_peminjaman)->row()->id_peminjaman;
+
+                        $inserted   = 0;
+                        $no_array   = 0;
+                        foreach($_POST['kode_buku'] as $k)
+                        {
+                            if( ! empty($k))
+                            {
+                                $id_p           = $id_peminjaman;
+                                $id_b           = $_POST['kode_buku'][$no_array];
+                                $jumlah_b       = $_POST['jumlah'][$no_array];
+
+                                    
+                                    $insert_d = $this->M_peminjaman->tambah_detail($id_p, $id_b, $jumlah_b);
+                                    
+                                    // if($insert_d)
+                                    // {
+                                    $bk         = $this->M_buku->get_jumlah($id_b)->row_array();
+                                    $stokk      = $bk['jumlah'];
+                                    $stok_new   = $stokk-$jumlah_b;
+                                    $this->M_buku->update_jumlah($id_b, $stok_new);
+
+                                    // if ($update_b) {
+                                    $inserted++;  
+                                    // }
+                                // }
+                            }
+                            $no_array++;
+                        }
+
+                        if($inserted > 0)
+                        {
+                            echo json_encode(array('status' => 1, 'pesan' => "Transaksi berhasil disimpan !"));
+                        }
+                        else
+                        {
+                            echo json_encode(array('status' => 0, 'pesan' => "GAGAL"));
+                        }
+                }
             }
         }
         else
@@ -123,6 +157,41 @@ class Peminjaman extends CI_Controller {
             $keyword = $this->input->post('keyword');
 
             $buku = $this->M_buku->cari_kode($keyword);
+
+            if($buku->num_rows() > 0)
+            {
+                $json['status']     = 1;
+                $json['datanya']    = "<ul id='daftar-autocomplete'>";
+                foreach($buku->result() as $b)
+                {
+                    $json['datanya'] .= "
+                        <li>
+                            <b>Kode</b> : 
+                            <span id='kodenya'>".$b->kode_buku."</span> <br />
+                            <span id='bukunya'>".$b->judul."</span> <br>
+                            <span id='penerbit' style='display:none;'>".$b->penerbit."</span>
+                            <span id='pengarang' style='display:none;'>".$b->pengarang."</span>
+                        </li>
+                    ";
+                }
+                $json['datanya'] .= "</ul>";
+            }
+            else
+            {
+                $json['status']     = 0;
+            }
+
+            echo json_encode($json);
+        }
+    }
+
+    public function ajax_kode_paket()
+    {
+        if($this->input->is_ajax_request())
+        {
+            $keyword = $this->input->post('keyword');
+
+            $buku = $this->M_buku->cari_kode_paket($keyword);
 
             if($buku->num_rows() > 0)
             {

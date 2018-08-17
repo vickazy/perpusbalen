@@ -36,7 +36,7 @@
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 
 								<li>
-									<a href="profile.html">
+									<a href="">
 										<i class="ace-icon fa fa-user"></i>
 										Profile
 									</a>
@@ -45,11 +45,9 @@
 								<li class="divider"></li>
 
 								<li>
-									<a href="#">
-										<a href="<?php echo site_url('Login/logout') ?>">
-											<i class="ace-icon fa fa-power-off"></i>
-											Logout
-										</a>
+									<a href="<?php echo site_url('Login/logout') ?>" onclick="return confirm('Apakah Anda Yakin?');">
+										<i class="ace-icon fa fa-power-off"></i>
+										Logout
 									</a>
 								</li>
 							</ul>

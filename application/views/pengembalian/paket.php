@@ -89,8 +89,22 @@
 
 										<br>
 
-										<input type="hidden" id="id_guru" value="">
+										<div class="widget-box">
+											<div class="widget-header">
+												<h4 class="widget-title">INFO GURU</h4>
+											</div>
 
+											<div class="widget-body">
+												<div class="widget-main no-padding">
+													<!-- <legend>Form</legend> -->
+													<form>
+													<fieldset class="form-group">
+														<input type="text" name="id_guru" class="form-control" id="id_guru" readonly>
+													</fieldset>
+													</form>
+												</div>
+											</div>
+										</div>
 									</div>
 
 									<div class="col-sm-9">
@@ -178,6 +192,7 @@
 				if(data.status == 1)
 				{
 					$('#tampilkan').html(data.hasil);
+					$('#id_guru').val(data.guru);
 					$('#id_peminjaman').val(data.id_peminjaman);
 					$('#id_petugas').val(data.petugas);
 					$('#tanggal_kembali').val(data.tanggal_kembali);
@@ -303,7 +318,7 @@
 			success: function(data){
 				if(data.status == 1){
 					alert(data.pesan); 
-					window.location.href="<?php echo site_url('Pengembalian'); ?>";
+					window.location.href="<?php echo site_url('Pengembalian/paket'); ?>";
 				}
 				if(data.status == 0){
 					$('.modal-dialog').removeClass('modal-lg');

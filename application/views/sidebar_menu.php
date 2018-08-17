@@ -62,11 +62,11 @@
 						</ul>
 					</li>
 
-					<li class="<?php if($menu == "pengembalian" || $menu == "peminjaman" || $menu == "histori"){echo "open";} ?>">
+					<li class="<?php if($menu == "paket" || $menu == "lainnya"){echo "open";} ?>">
 						<a href="#" class="dropdown-toggle">
-							<i class="menu-icon fa fa-exchange"></i>
+							<i class="menu-icon fa fa-upload"></i>
 							<span class="menu-text">
-								Transaksi
+								Peminjaman
 							</span>
 
 							<b class="arrow fa fa-angle-down"></b>
@@ -76,34 +76,67 @@
 
 						<ul class="submenu">
 
-							<li class="<?php if($menu == "peminjaman"){echo "active";} ?>">
+							<li class="<?php if($menu == "paket"){echo "active";} ?>">
+								<a href="<?php echo site_url('Peminjaman/paket') ?>">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Buku Paket Pelajaran
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
+							<li class="<?php if($menu == "lainnya"){echo "active";} ?>">
 								<a href="<?php echo site_url('Peminjaman') ?>">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Peminjaman
+									Buku Lainnya
+								</a>
+
+								<b class="arrow"></b>
+							</li>	
+						</ul>
+					</li>
+
+					<li class="<?php if($menu == "ppaket" || $menu == "plainnya"){echo "open";} ?>">
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-download"></i>
+							<span class="menu-text">
+								Pengembalian
+							</span>
+
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+
+						<b class="arrow"></b>
+
+						<ul class="submenu">
+
+							<li class="<?php if($menu == "ppaket"){echo "active";} ?>">
+								<a href="<?php echo site_url('Pengembalian/paket') ?>">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Buku Paket Pelajaran
 								</a>
 
 								<b class="arrow"></b>
 							</li>
 
-							<li class="<?php if($menu == "pengembalian"){echo "active";} ?>">
+							<li class="<?php if($menu == "plainnya"){echo "active";} ?>">
 								<a href="<?php echo site_url('Pengembalian') ?>">
 									<i class="menu-icon fa fa-caret-right"></i>
-									Pengembalian
+									Buku Lainnya
 								</a>
 
 								<b class="arrow"></b>
-							</li>
-
-							<li class="<?php if($menu == "histori"){echo "active";} ?>">
-								<a href="<?php echo site_url('Peminjaman/histori') ?>">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Histori Peminjaman
-								</a>
-
-								<b class="arrow"></b>
-							</li>
-							
+							</li>	
 						</ul>
+					</li>
+
+					<li class="<?php if($menu == "histori"){echo "active";} ?>">
+						<a href="<?php echo site_url('Peminjaman/histori') ?>">
+							<i class="menu-icon fa fa-time"></i>
+							<span class="menu-text"> Histori </span>
+						</a>
+
+						<b class="arrow"></b>
 					</li>
 				</ul><!-- /.nav-list -->
 			</div>

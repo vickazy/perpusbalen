@@ -17,14 +17,37 @@ class M_anggota extends CI_Model {
 
 	public function get_peminjaman()
 	{
-		$this->db->where('status', 0);
-		return $this->db->get('anggota');
+		return $this->db->query("SELECT * FROm anggota 
+								WHERE status < 4");
+	}
+
+	public function get_peminjaman_paket()
+	{
+		return $this->db->query("SELECT * FROM anggota");
 	}
 
 	public function get_pengembalian()
 	{
-		$this->db->where('status', 1);
-		return $this->db->get('anggota');
+		$q = $this->db->query("SELECT * FROM transaksi, detail_transaksi, anggota
+								WHERE transaksi.id_peminjaman = detail_transaksi.id_peminjaman
+								AND transaksi.id_anggota = anggota.nis
+								AND detail_transaksi.status = 'P'
+								AND transaksi.id_guru=0
+								GROUP BY transaksi.id_peminjaman");
+		
+		return $q;
+	}
+
+	public function get_pengembalian_paket()
+	{
+		$r =  $this->db->query("SELECT * FROM transaksi, detail_transaksi, anggota, guru
+								WHERE transaksi.id_peminjaman = detail_transaksi.id_peminjaman
+								AND transaksi.id_anggota = anggota.nis
+								AND transaksi.id_guru = guru.id_guru
+								AND detail_transaksi.status = 'P'
+								AND transaksi.id_guru!=0
+								GROUP BY transaksi.id_peminjaman");
+		return $r;
 	}
 
 	public function get_by_id($nis)
@@ -62,7 +85,7 @@ class M_anggota extends CI_Model {
 		$this->db->update('anggota', $data);
 	}
 
-	public function update_peminjaman($id_anggota, $status)
+	public function update_status($id_anggota, $status)
 	{
 		$data = array('status' => $status );
 
