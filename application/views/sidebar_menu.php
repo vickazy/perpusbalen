@@ -10,7 +10,7 @@
 						<b class="arrow"></b>
 					</li>
 
-					<li class="<?php if($menu == "buku" || $menu == "anggota" || $menu == "guru" || $menu == "petugas"){echo "open";} ?>">
+					<li class="<?php if($menu == "buku" || $menu == "jenis" || $menu == "anggota" || $menu == "guru" || $menu == "petugas"){echo "open";} ?>">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-desktop"></i>
 							<span class="menu-text">
@@ -23,6 +23,15 @@
 						<b class="arrow"></b>
 
 						<ul class="submenu">
+
+							<li class="<?php if($menu == "jenis"){echo "active";} ?>">
+								<a href="<?php echo site_url('Jenis') ?>">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Jenis Buku
+								</a>
+
+								<b class="arrow"></b>
+							</li>
 
 							<li class="<?php if($menu == "buku"){echo "active";} ?>">
 								<a href="<?php echo site_url('Buku') ?>">
@@ -132,7 +141,7 @@
 
 					<li class="<?php if($menu == "histori"){echo "active";} ?>">
 						<a href="<?php echo site_url('Peminjaman/histori') ?>">
-							<i class="menu-icon fa fa-time"></i>
+							<i class="menu-icon fa fa-history"></i>
 							<span class="menu-text"> Histori </span>
 						</a>
 

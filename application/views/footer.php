@@ -16,3 +16,11 @@
 
 	</body>
 </html>
+
+<script>
+	<?php
+		if (isset($modal_show)) {
+			echo $modal_show;
+		}
+	?>
+</script>

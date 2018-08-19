@@ -207,7 +207,7 @@
                         <div class="form-group">
                             <label>Keterangan</label>
                             <div>
-                                <textarea class="form-control" name="keterangan" id="" cols="10" rows="5"></textarea>
+                                <textarea class="form-control" name="keterangan" cols="10" rows="5" required></textarea>
                                 <?php echo form_error('keterangan') ?>
                             </div>
                         </div>

@@ -163,6 +163,7 @@ class Buku extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $data['judul']  = "Buku";
             $data['menu']   = "buku";
+            $data['modal_show'] = "$('#modal-form').modal('show');";
             $data['buku']   = $this->M_buku->get_all()->result();
             $data['jenis']  = $this->M_jenis->get_all()->result();
             $this->load->view('buku/index', $data);

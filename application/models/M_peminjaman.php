@@ -28,7 +28,7 @@ class M_peminjaman extends CI_Model {
 
 	public function get_all()
 	{
-		$q = $this->db->query("SELECT *, transaksi.status as ts FROM transaksi, detail_transaksi, anggota, petugas
+		$q = $this->db->query("SELECT *, detail_transaksi.status as ts FROM transaksi, detail_transaksi, anggota, petugas
 							WHERE transaksi.id_peminjaman = detail_transaksi.id_peminjaman
 							AND transaksi.id_anggota = anggota.nis
 							AND transaksi.id_petugas = petugas.id_petugas
@@ -111,7 +111,7 @@ class M_peminjaman extends CI_Model {
 		$this->db->insert('detail_transaksi', $data);
 	}
 
-	public function update($id_peminjaman, $tanggal_sekarang, $denda)
+	public function update($id_peminjaman, $tanggal_sekarang, $kode_buku, $denda)
 	{	
 
 		$data = array(
@@ -126,16 +126,18 @@ class M_peminjaman extends CI_Model {
 		$this->db->update('transaksi', $data);
 
 		$this->db->where('id_peminjaman', $id_peminjaman);
+		$this->db->where('kode_buku', $kode_buku);
 		$this->db->update('detail_transaksi', $status);
 	}
 
 	public function hitung_denda($id_anggota, $tanggal_sekarang)
 	{
 		$selisih = $this->db->query("SELECT datediff('$tanggal_sekarang', tanggal_kembali) as selisih 
-			FROM transaksi, anggota
+			FROM transaksi, detail_transaksi, anggota
 			WHERE transaksi.id_anggota = anggota.nis
 			AND anggota.nis = '$id_anggota'
-			AND transaksi.status = 'P'
+			AND transaksi.id_peminjaman = detail_transaksi.id_peminjaman
+			AND detail_transaksi.status = 'P'
 			")->row()->selisih;
 
 		$jumlah_b = $this->db->query("SELECT kode_buku 

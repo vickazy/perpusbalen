@@ -110,6 +110,7 @@
 																<th>Penerbit</th>
 																<th>Pengarang</th>
 																<th>Jumlah</th>
+																<th></th>
 															</thead>
 															<tbody id="tampilkan">
 																
@@ -194,6 +195,17 @@
 					$('#modal-stok').modal('show');
 				}
 			}
+		});
+	});
+
+	$(document).on('click', '#HapusBaris', function(e){
+		e.preventDefault();
+		$(this).parent().parent().remove();
+
+		var Nomor = 1;
+		$('#TabelPengembalian tbody tr').each(function(){
+			$(this).find('td:nth-child(1)').html(Nomor);
+			Nomor++;
 		});
 	});
 	

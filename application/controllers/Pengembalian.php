@@ -47,7 +47,7 @@ class Pengembalian extends CI_Controller {
 
         if($total > 0)
         {
-            $id_peminjaman      = $this->input->post('id_peminjaman');          //no_nota
+            $id_peminjaman      = $this->input->post('id_peminjaman');          
             $tanggal_sekarang   = $this->input->post('tanggal_sekarang');
             $id_guru            = $this->input->post('id_guru' );
             $denda              = $this->input->post('denda');
@@ -62,7 +62,6 @@ class Pengembalian extends CI_Controller {
             }
             else
             {
-                $this->M_peminjaman->update($id_peminjaman, $tanggal_sekarang, $denda);
 
                 $id_peminjaman = $this->M_peminjaman->get_id_peminjaman($id_peminjaman)->row()->id_peminjaman;
 
@@ -90,6 +89,8 @@ class Pengembalian extends CI_Controller {
                             $id_p           = $id_peminjaman;
                             $id_b           = $_POST['kode_buku'][$no_array];
                             $jumlah_b       = $_POST['jumlah'][$no_array];
+
+                            $this->M_peminjaman->update($id_peminjaman, $tanggal_sekarang, $id_b, $denda);
 
                             // $insert_d = $this->M_peminjaman->tambah_detail($id_p, $id_b, $jumlah_b);
                             
@@ -150,11 +151,12 @@ class Pengembalian extends CI_Controller {
                     $json['hasil'] .= "
                         <tr>
                             <td>".$no."</td>
-                            <td width='30px'> <input type='text' class='form-control' name='kode_buku[]' value=".$b->kode_buku." readonly /></td> <br />
-                            <td >".$b->judul."</td> <br>
+                            <td width='30px'> <input type='text' class='form-control' name='kode_buku[]' value=".$b->kode_buku." readonly /></td>
+                            <td >".$b->judul."</td>
                             <td >".$b->penerbit."</td>
                             <td >".$b->pengarang."</td>
                             <td width='30px'> <input type='text' class='form-control' name='jumlah[]' value=".$b->jumlah." readonly /></td>
+                            <td><button class='btn btn-sm btn-default' id='HapusBaris'><i class='fa fa-times' style='color:red;'></i></button></td>
                         </tr>
                     ";
                     $no++;
@@ -177,11 +179,12 @@ class Pengembalian extends CI_Controller {
                         <tr>
                             <tr>
                             <td>".$no."</td>
-                            <td width='30px'> <input type='text' class='form-control' name='kode_buku[]' value=".$b->kode_buku." readonly /></td> <br />
-                            <td >".$b->judul."</td> <br>
+                            <td width='30px'> <input type='text' class='form-control' name='kode_buku[]' value=".$b->kode_buku." readonly /></td>
+                            <td >".$b->judul."</td>
                             <td >".$b->penerbit."</td>
                             <td >".$b->pengarang."</td>
                             <td width='30px'> <input type='text' class='form-control' name='jumlah[]' value=".$b->jumlah." readonly /></td>
+                            <td width='30px'><button class='btn btn-sm btn-default' id='HapusBaris'><i class='fa fa-times' style='color:red;'></i></button></td>
                         </tr>
                     ";
                     $no++;

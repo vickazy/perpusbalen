@@ -47,9 +47,6 @@ class M_petugas extends CI_Model {
 		$this->db->where('id_petugas', $id_petugas);
 		$this->db->update('petugas', $data);
 	}
-
-	
-
 }
 
 /* End of file M_petugas.php */

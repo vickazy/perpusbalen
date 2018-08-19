@@ -424,6 +424,7 @@
 		FormData += "&id_anggota="+$('.id_anggota').val();
 		FormData += "&id_petugas="+$('#id_petugas').val();
 		FormData += "&id_guru="+$('#id_guru').val();
+		FormData += "&id_gurup="+$('#id_guru').val();
 		FormData += "&" + $('#TabelTransaksi tbody input').serialize();
 
 		$.ajax({

@@ -55,12 +55,13 @@ class Peminjaman extends CI_Controller {
 
         if($total > 0)
         {
-            $id_peminjaman      = $this->input->post('id_peminjaman');          //no_nota
-            $tanggal_pinjam     = $this->input->post('tanggal_pinjam');      //tanggal
-            $tanggal_kembali    = $this->input->post('tanggal_kembali');      //tanggal
-            $id_petugas         = $this->input->post('id_petugas');             //kasir
-            $id_anggota         = $this->input->post('id_anggota');              //pelanggan
-            $id_guru            = $this->input->post('id_guru');              //pelanggan
+            $id_peminjaman      = $this->input->post('id_peminjaman');          
+            $tanggal_pinjam     = $this->input->post('tanggal_pinjam');      
+            $tanggal_kembali    = $this->input->post('tanggal_kembali');     
+            $id_petugas         = $this->input->post('id_petugas');            
+            $id_anggota         = $this->input->post('id_anggota');             
+            $id_guru            = $this->input->post('id_guru');              
+            $id_gurup           = $this->input->post('id_gurup');              
 
             if($tanggal_kembali == '')
             {
@@ -69,6 +70,10 @@ class Peminjaman extends CI_Controller {
             elseif($id_anggota == '')
             {
                 echo json_encode(array('status' => 0, 'pesan' => "Pilih Peminjam"));
+            }
+            elseif($id_gurup == '')
+            {
+                echo json_encode(array('status' => 0, 'pesan' => "Pilih Guru"));
             }
             else
             {
@@ -83,9 +88,15 @@ class Peminjaman extends CI_Controller {
                             if ($st+$stn > 4) {
                                 $err++;
                                 echo json_encode(array('status' => 0, 'pesan' => "Batas peminjaman <strong>4 Buku</strong>!"));
-                                $this->M_anggota->update_status($id_anggota, $st);
+                                // $this->M_anggota->update_status($id_anggota, $st);
+
+                                for ($i=0; $i<$hm; $i++) { 
+                                    $jumjum = $_POST['jumlah'][$i];
+                                    $this->M_anggota->update_status($id_anggota, $st-$jumjum);
+                                }
+
                             } else {
-                                $this->M_anggota->update_status($id_anggota, $st+$stn); 
+                                $this->M_anggota->update_status($id_anggota, $st+$stn);
                             }
                         }
 
