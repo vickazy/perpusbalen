@@ -37,7 +37,11 @@
 													<fieldset class="form-inline">
 														<label>ID Peminjaman</label> 
 														<input class="form-control" type="text" name="id_peminjaman" id="id_peminjaman" value="<?php echo $id_p; ?>" readonly/>
-														<input class="form-control" type="hidden" id="id_petugas" name="id_petugas" value="1"/>
+														<?php 
+															$userdata = $this->session->userdata('userdata');
+															$id_petugas = $userdata['id_petugas'];
+														?>
+														<input class="form-control" type="hidden" id="id_petugas" name="id_petugas" value="<?php echo $id_petugas ?>"/>
 														
 														&nbsp;
 

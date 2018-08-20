@@ -45,7 +45,6 @@
                                   <th width="10px">ID. Peminjaman</th>
                                   <th>Tanggal Peminjaman</th>
                                   <th>Nama Peminjam</th>
-                                  <th>Status</th>
                                   <th width="60px">Aksi</th>
                               </tr>
                           </thead>
@@ -121,6 +120,7 @@
                                         <th>Penerbit</th>
                                         <th>Pengarang</th>
                                         <th>Jumlah Pinjam</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
 
@@ -134,6 +134,13 @@
                                         <td><?php echo $key->penerbit ?></td>
                                         <td><?php echo $key->pengarang ?></td>
                                         <td><?php echo $key->jumlah ?></td>
+                                        <td>
+                                          <?php if ($key->status == 'K') {
+                                            echo "Kembali";
+                                          }else{
+                                            echo "Dipinjam";
+                                          } ?>
+                                        </td>
                                     </tr>
                                     <?php endforeach; ?>
                                     <tr>
@@ -231,10 +238,6 @@
         },
         {
           "targets":3,
-          "data":"status",
-        },
-        {
-          "targets":4,
           "data": null,
           "searchable": false,
           "render":function(data,tipe,full,meta){
@@ -248,7 +251,7 @@
 
              // Populate a dataset for autocomplete functionality
              // using data from first, second and third columns
-             api.cells('tr', [0, 1, 2, 3]).every(function(){
+             api.cells('tr', [0, 1, 2]).every(function(){
                 var data = this.data();
                 if(dataSrc.indexOf(data) === -1){ dataSrc.push(data); }
              });

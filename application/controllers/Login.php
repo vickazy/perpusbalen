@@ -42,8 +42,10 @@ class Login extends CI_Controller {
 
 			if ($cek > 0) {
 				$session['id_petugas'] 	= $cek1['id_petugas'];
+				$session['nip'] 		= $cek1['nip'];
 				$session['user'] 		= $cek1['user'];
-				$session['password'] 		= $cek1['password'];
+				$session['password'] 	= $cek1['password'];
+				$session['nama_petugas']= $cek1['nama_petugas'];
 				$this->session->set_userdata('userdata',$session);
 				redirect('Dashboard');
 			} else {

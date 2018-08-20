@@ -234,10 +234,11 @@ class Peminjaman extends CI_Controller {
     public function data_server()
     {
         $this->load->library('Datatables');
-        $this->datatables->select('transaksi.id_peminjaman, transaksi.tanggal_pinjam, anggota.nama, transaksi.status');
+        $this->datatables->select('transaksi.id_peminjaman, transaksi.tanggal_pinjam, anggota.nama');
         $this->datatables->from('transaksi');
+        $this->datatables->join('detail_transaksi', 'transaksi.id_peminjaman = detail_transaksi.id_peminjaman');
         $this->datatables->join('anggota', 'transaksi.id_anggota = anggota.nis');
-        // $this->datatables->order_by('transaksi.id_peminjaman', 'asc');
+        $this->datatables->group_by('transaksi.id_peminjaman');
         echo $this->datatables->generate();
     }
 }

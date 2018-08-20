@@ -10,7 +10,7 @@
 						<b class="arrow"></b>
 					</li>
 
-					<li class="<?php if($menu == "buku" || $menu == "jenis" || $menu == "anggota" || $menu == "guru" || $menu == "petugas"){echo "open";} ?>">
+					<li class="<?php if($menu == "buku" || $menu == "jenis" || $menu == "anggota" || $menu == "guru"){echo "open";} ?>">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-desktop"></i>
 							<span class="menu-text">
@@ -55,15 +55,6 @@
 								<a href="<?php echo site_url('Guru') ?>">
 									<i class="menu-icon fa fa-caret-right"></i>
 									Guru
-								</a>
-
-								<b class="arrow"></b>
-							</li>
-
-							<li class="<?php if($menu == "petugas"){echo "active";} ?>">
-								<a href="<?php echo site_url('Petugas') ?>">
-									<i class="menu-icon fa fa-caret-right"></i>
-									Petugas
 								</a>
 
 								<b class="arrow"></b>
@@ -143,6 +134,22 @@
 						<a href="<?php echo site_url('Peminjaman/histori') ?>">
 							<i class="menu-icon fa fa-history"></i>
 							<span class="menu-text"> Histori </span>
+						</a>
+
+						<b class="arrow"></b>
+					</li>
+
+					<li class="divider">
+						<br>
+					</li>
+					<li class="divider">
+						<br>
+					</li>
+
+					<li class="<?php if($menu == "petugas"){echo "active";} ?>">
+						<a href="<?php echo site_url('Petugas') ?>">
+							<i class="menu-icon fa fa-user-plus"></i>
+							<span class="menu-text"> Admin Sistem </span>
 						</a>
 
 						<b class="arrow"></b>

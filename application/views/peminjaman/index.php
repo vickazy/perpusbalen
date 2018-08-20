@@ -37,7 +37,11 @@
 													<fieldset class="form-inline">
 														<label>ID Peminjaman</label> 
 														<input class="form-control" type="text" name="id_peminjaman" id="id_peminjaman" value="<?php echo $id_p; ?>" readonly/>
-														<input class="form-control" type="hidden" id="id_petugas" name="id_petugas" value="1"/>
+														<?php 
+															$userdata = $this->session->userdata('userdata');
+															$id_petugas = $userdata['id_petugas'];
+														?>
+														<input class="form-control" type="hidden" id="id_petugas" name="id_petugas" value="<?php echo $id_petugas ?>"/>
 														
 														&nbsp;
 
@@ -47,7 +51,11 @@
 														&nbsp;
 
 														<label>Tanggal Kembali</label>
-														<input class="form-control input-mask-dateku" type="text" name="tanggal_kembali" id="tanggal_kembali" placeholder="thn-bln-hr" />
+														<?php 
+															$limahari = mktime(0,0,0, date("n"), date("j")+5, date("Y"));
+                											$tgl   = date('Y-m-d', $limahari);
+														?>
+														<input class="form-control" type="text" name="tanggal_kembali" id="tanggal_kembali" value="<?php echo $tgl ?>" readonly/>
 			                            				
 													</fieldset>
 													</form>

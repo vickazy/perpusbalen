@@ -8,6 +8,7 @@ class Dashboard extends CI_Controller{
         $this->load->model('M_buku');
         $this->load->model('M_anggota');
         $this->load->model('M_peminjaman');
+        $this->load->model('M_petugas');
 
         if ($this->session->userdata('userdata') == null) {
             redirect('Login');

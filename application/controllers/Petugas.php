@@ -107,12 +107,51 @@ class Petugas extends CI_Controller {
         }
     }
 
+    public function profil($id_petugas)
+    {
+        $data['judul']  = "Profil Petugas";
+        $data['menu']   = "profil";
+        $this->load->view('petugas/profil', $data);
+    }
+
     public function edit($id_petugas)
     {
         $data['judul']  = "Petugas";
         $data['menu']   = "petugas";
         $data['petugas']= $this->M_petugas->get_by_id($id_petugas)->row_array();
         $this->load->view('petugas/edit', $data);
+    }
+
+    public function edit_pass($id_petugas)
+    {
+        $data['judul']  = "Petugas";
+        $data['menu']   = "p";
+        $this->load->view('petugas/edit_pass', $data);
+    }
+
+    public function edit_profil($id_petugas)
+    {
+        $this->form_validation->set_rules('nip', 'NIP / NIGNP', 'required|trim',
+                array(
+                    'required' => '<div class="alert alert-danger"><strong>Gagal!</strong> NIP / NIGNP Tidak Boleh Kosong.</div>'
+                    )
+            );
+        $this->form_validation->set_rules('nama', 'Nama Petugas', 'required|trim',
+                array(
+                    'required' => '<div class="alert alert-danger"><strong>Gagal!</strong> Nama Petugas Tidak Boleh Kosong.</div>'
+                    )
+            );
+
+        //jika validasi gagal
+        if ($this->form_validation->run() == FALSE) {
+            $data['judul']  = "Profil Petugas";
+            $data['menu']   = "profil";
+            $this->load->view('petugas/profil', $data);
+        }else{
+            $this->M_petugas->edit_proses($id_petugas);
+            $this->session->set_flashdata('sukses_edit','1');
+            redirect('petugas/profil/'.$id_petugas,'refresh');
+        }
     }
 
     public function edit_proses($id_petugas)
@@ -138,6 +177,47 @@ class Petugas extends CI_Controller {
             $this->M_petugas->edit_proses($id_petugas);
             $this->session->set_flashdata('sukses_edit','1');
             redirect('petugas','refresh');
+        }
+    }
+
+    public function edit_pass_proses($id_petugas)
+    {
+        $this->form_validation->set_rules('password_baru', 'Password', 'required|trim',
+                array(
+                    'required' => '<div class="alert alert-danger"><strong>Error!</strong> Password Tidak Boleh Kosong.</div>'
+                    )
+            );
+        $this->form_validation->set_rules('password_baru_k', 'Konfirmasi Password', 'required|matches[password_baru]|trim',
+                array(
+                    'required' => '<div class="alert alert-danger"><strong>Error!</strong> Konfirmasi Password Tidak Boleh Kosong.</div>',
+                    'matches' => '<div class="alert alert-danger"><strong>Error!</strong> Password Tidak Sama.</div>',
+                    )
+            );
+
+        //jika validasi gagal
+        if ($this->form_validation->run() == FALSE) {
+            $data['judul']  = "Petugas";
+            $data['menu']   = "p";
+            $this->load->view('petugas/edit_pass', $data);
+        }else{
+            $cek_nik        = $this->db->query("SELECT * FROM petugas WHERE id_petugas = '$id_petugas' ")->row_array();
+
+
+            $pass_lama_in   = MD5($this->input->post('password'));
+            $pass_baru      = MD5($this->input->post('password_baru'));
+
+            if ($cek_nik['password'] == $pass_lama_in) {
+                $data = array('password' => $pass_baru);
+
+                $this->db->where('id_petugas', $id_petugas);
+                $this->db->update('petugas', $data);
+
+                $this->session->set_flashdata('sukses_edit','1');
+                redirect('Petugas/edit_pass/'.$id_petugas);
+            } else {
+                $this->session->set_flashdata('gagal_edit','1');
+                redirect('Petugas/edit_pass/'.$id_petugas);
+            }
         }
     }
 

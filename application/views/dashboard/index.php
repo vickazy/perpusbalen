@@ -57,7 +57,7 @@
 
 										<div class="infobox infobox-pink infobox-dark">
 											<div class="infobox-icon">
-												<i class="ace-icon fa fa-download"></i>
+												<i class="ace-icon fa fa-exchange "></i>
 											</div>
 
 											<div class="infobox-data">
@@ -102,13 +102,13 @@
 <script>
 	Highcharts.chart('container', {
 	    chart: {
-	        type: 'line'
+	        type: 'column'
 	    },
 	    title: {
-	        text: 'Peminjaman Per Bulan'
+	        text: 'Peminjaman Per Bulan / Jenis Buku'
 	    },
 	    subtitle: {
-	        text: 'Perpustakaan MTs Negeri Balen'
+	        text: 'Perpustakaan MTs Negeri 5 Bojonegoro'
 	    },
 	    xAxis: {
 	        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -137,7 +137,11 @@
 		        	<?php 
 		        		for ($i = 1; $i <= 12; $i++) {
         					$fr = $this->M_peminjaman->get_buku_per_bln($key->id_jenis, $i)->row_array();
-        					echo $fr['jum'].", ";	
+        					if ($fr['juml'] != NULL) {
+        						echo $fr['juml'].", ";	
+        					} else {
+        						echo "0, ";
+        					}
 		        		}
 		        	?>
 

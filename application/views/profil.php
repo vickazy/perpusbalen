@@ -24,10 +24,14 @@
 
 						<li class="light-blue dropdown-modal">
 							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-								<img class="nav-user-photo" src="<?php echo base_url() ?>assets/images/avatars/user.jpg" alt="Jason's Photo" />
+								<img class="nav-user-photo" src="<?php echo base_url() ?>assets/images/avatars/avatar2.png" alt="Jason's Photo" />
 								<span class="user-info">
 									<small>Selamat Datang,</small>
-									Admin
+									<?php
+										$u = $this->session->userdata('userdata');
+										$p = $this->M_petugas->get_by_id($u['id_petugas'])->row_array();
+										echo $p['nama_petugas'];
+									?>
 								</span>
 
 								<i class="ace-icon fa fa-caret-down"></i>
@@ -36,9 +40,18 @@
 							<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 
 								<li>
-									<a href="">
+									<a href="<?php echo site_url('Petugas/profil/'.$u['id_petugas']) ?>">
 										<i class="ace-icon fa fa-user"></i>
-										Profile
+										Profil
+									</a>
+								</li>
+
+								<li class="divider"></li>
+
+								<li>
+									<a href="<?php echo site_url('Petugas/edit_pass/'.$u['id_petugas']) ?>">
+										<i class="ace-icon fa fa-key"></i>
+										Edit Password
 									</a>
 								</li>
 
